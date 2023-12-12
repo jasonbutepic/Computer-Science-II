@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move element &apos;DigitsDisplay.java&apos; to &apos;Chapter Six/src/(default package)&apos;&#x0D;&#x0A;- Original project: &apos;Chapter Five&apos;&#x0D;&#x0A;- Destination element: &apos;Chapter Six/src/(default package)&apos;&#x0D;&#x0A;- Original element: &apos;DigitsDisplay.java&apos;&#x0D;&#x0A;- Update references to refactored element" description="Move compilation unit" destination="=Chapter Six/src&lt;" element1="/src&lt;{DigitsDisplay.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.move" policy="org.eclipse.jdt.ui.moveResources" qualified="false" references="true" stamp="1677503622289" units="1" version="1.0"/>
+</session>
