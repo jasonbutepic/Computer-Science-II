@@ -32,16 +32,24 @@ public class D_and_D {
                 }
             }
 
+        // Add the input panel to the content pane
+        contentPane.add(Dungeon);
+
+        // Add content pane to frame
         frame.setContentPane(contentPane);
 
+        // Size and then display the frame.
         frame.pack();
         frame.setVisible(true);
     }
     
     ActionListener pee = new ActionListener() {
-        
+        public void actionPerformed(ActionEvent e) {
+            JButton button = (JButton) e.getSource();
+            button.setBackground(Color.RED);
+        }
     };
-    
+
     private static void runGUI() {
         JFrame.setDefaultLookAndFeelDecorated(true);
 
