@@ -24,8 +24,10 @@ public class D_and_D {
         dungeonBoard = new JButton[10][10];
             for (int i = 0; i < rows; i++) {
                 for (int j = 0; j < columns; j++) {
-                    dungeonBoard[i][j] = new JButton("uh oh spaghettios");
+                    dungeonBoard[i][j] = new JButton("X");
                     dungeonBoard[i][j].setPreferredSize(new Dimension(50, 50));
+                    dungeonBoard[i][j].setActionCommand(i + " " + j);
+                    dungeonBoard[i][j].addActionListener(pee);
                     contentPane.add(dungeonBoard[i][j]);
                 }
             }
@@ -35,6 +37,10 @@ public class D_and_D {
         frame.pack();
         frame.setVisible(true);
     }
+    
+    ActionListener pee = new ActionListener() {
+        
+    };
     
     private static void runGUI() {
         JFrame.setDefaultLookAndFeelDecorated(true);
