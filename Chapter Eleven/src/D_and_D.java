@@ -4,67 +4,89 @@ import java.awt.event.*;
 
 public class D_and_D {
     JFrame frame;
-    JPanel contentPane;
-    JButton[][] dungeonBoard;
-    JButton moveUp, moveRight, moveDown, moveLeft;
-    int rows, columns;
+    JPanel movePanel, dungeonBoard, contentPane;
+    JButton moveUp, moveRight, moveDown, moveLeft, fire, blank;
+    JTextField events;
+    JLabel label;
 
     public D_and_D() {
-        frame = new JFrame("Dungeons Dragons Drive-Ins and Dives");
+
+        //for move buttons change it so be sepreate frames for each and display north east south west
+
+        frame = new JFrame("Dungeons and Dragons");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500,500); 
 
         contentPane = new JPanel();
-        contentPane.setLayout(new GridLayout(10, 10, 0, 0));
-        contentPane.setBorder(BorderFactory.createEmptyBorder(900, 900, 900, 900));
+        contentPane.setLayout(new BorderLayout());
 
-        JPanel Dungeon = new JPanel();
-        Dungeon.setLayout(new FlowLayout());
+        movePanel = new JPanel();
+        movePanel.setLayout(new GridLayout(3, 3, 0, 0));
+        movePanel.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100));
+        movePanel.setBackground(Color.white);
 
-        dungeonBoard = new JButton[10][10];
-            for (int i = 0; i < rows; i++) {
-                for (int j = 0; j < columns; j++) {
-                    dungeonBoard[i][j] = new JButton("X");
-                    dungeonBoard[i][j].setPreferredSize(new Dimension(50, 50));
-                    dungeonBoard[i][j].setActionCommand(i + " " + j);
-                    dungeonBoard[i][j].addActionListener(pee);
-                    contentPane.add(dungeonBoard[i][j]);
-                }
-            }
+        blank = new JButton(" ");
+        blank.setPreferredSize(new Dimension(150, 150));
+        blank.setBackground(Color.white);
+        blank.setBorderPainted(false);
+        movePanel.add(blank);
 
-        // Add the input panel to the content pane
-        contentPane.add(Dungeon);
+        moveUp = new JButton("Up");
+        moveUp.setPreferredSize(new Dimension(150, 150));
+        movePanel.add(moveUp);
 
-        // Add content pane to frame
-        frame.setContentPane(contentPane);
+        blank = new JButton(" ");
+        blank.setPreferredSize(new Dimension(150, 150));
+        blank.setBackground(Color.white);
+        blank.setBorderPainted(false);
+        movePanel.add(blank);
 
-        // Size and then display the frame.
+        moveLeft = new JButton("Left");
+        moveLeft.setPreferredSize(new Dimension(150, 150));
+        movePanel.add(moveLeft);
+
+        blank = new JButton(" ");
+        blank.setPreferredSize(new Dimension(150, 150));
+        blank.setBackground(Color.white);
+        blank.setBorderPainted(false);
+        movePanel.add(blank);
+
+        moveRight = new JButton("Right");
+        moveRight.setPreferredSize(new Dimension(150, 150));
+        movePanel.add(moveRight);
+
+        blank = new JButton(" ");
+        blank.setPreferredSize(new Dimension(150, 150));
+        blank.setBackground(Color.white);
+        blank.setBorderPainted(false);
+        movePanel.add(blank);
+
+        moveDown = new JButton("Down");
+        moveDown.setPreferredSize(new Dimension(150, 150));
+        movePanel.add(moveDown);
+
+        blank = new JButton(" ");
+        blank.setPreferredSize(new Dimension(150, 150));
+        blank.setBackground(Color.white);
+        blank.setBorderPainted(false);
+        movePanel.add(blank);
+
+        contentPane.add(movePanel, BorderLayout.CENTER);
+        contentPane.setBackground(Color.white);
+        frame.add(contentPane);
         frame.pack();
         frame.setVisible(true);
     }
-    
-    ActionListener pee = new ActionListener() {
-        public void actionPerformed(ActionEvent e) {
-            JButton button = (JButton) e.getSource();
-            button.setBackground(Color.RED);
-        }
-    };
 
     private static void runGUI() {
         JFrame.setDefaultLookAndFeelDecorated(true);
-
-        D_and_D burger = new D_and_D();
+        D_and_D game = new D_and_D();
     }
-     
 
     public static void main(String[] args) {
-        /* Methods that create and show a GUI should be 
-           run from an event-dispatching thread */
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 runGUI();
             }
         });
     }
-
 }
