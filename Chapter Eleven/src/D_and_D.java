@@ -8,7 +8,7 @@ public class D_and_D {
     JButton moveUp, moveRight, moveDown, moveLeft, fire, blank, spaces[][];
     JTextField events;
     JLabel label;
-    int heroX, heroY;
+    int heroX, heroY, arrowX, arrowY, ropeX, ropeY;
 
     public D_and_D() {
         frame = new JFrame("Dungeons and Dragons");
@@ -112,6 +112,16 @@ public class D_and_D {
     }
 
     public void Placement() {
+        for (int i = 0; i < 10; i++) {
+            int pitX = (int) (Math.random() * 10);
+            int pitY = (int) (Math.random() * 10);
+            spaces[pitX][pitY].setBackground(Color.green);
+        }
+
+        arrowX = (int) (Math.random() * 10);
+        arrowY = (int) (Math.random() * 10);
+        spaces[arrowX][arrowY].setBackground(Color.orange);
+
         heroX = (int) (Math.random() * 10);
         heroY = (int) (Math.random() * 10);
         spaces[heroX][heroY].setBackground(Color.blue);
@@ -119,16 +129,6 @@ public class D_and_D {
         int dragonX = (int) (Math.random() * 10);
         int dragonY = (int) (Math.random() * 10);
         spaces[dragonX][dragonY].setBackground(Color.red);
-
-        for (int i = 0; i < 10; i++) {
-            int pitX = (int) (Math.random() * 10);
-            int pitY = (int) (Math.random() * 10);
-            spaces[pitX][pitY].setBackground(Color.green);
-        }
-
-        int arrowX = (int) (Math.random() * 10);
-        int arrowY = (int) (Math.random() * 10);
-        spaces[arrowX][arrowY].setBackground(Color.orange);
     }
 
     public void Movement() {
