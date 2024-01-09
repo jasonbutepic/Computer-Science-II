@@ -8,6 +8,7 @@ public class D_and_D {
     JButton moveUp, moveRight, moveDown, moveLeft, fire, blank, spaces[][];
     JTextField events;
     JLabel label;
+    int heroX, heroY;
 
     public D_and_D() {
         frame = new JFrame("Dungeons and Dragons");
@@ -111,8 +112,8 @@ public class D_and_D {
     }
 
     public void Placement() {
-        int heroX = (int) (Math.random() * 10);
-        int heroY = (int) (Math.random() * 10);
+        heroX = (int) (Math.random() * 10);
+        heroY = (int) (Math.random() * 10);
         spaces[heroX][heroY].setBackground(Color.blue);
 
         int dragonX = (int) (Math.random() * 10);
