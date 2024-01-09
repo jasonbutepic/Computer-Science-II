@@ -105,6 +105,33 @@ public class D_and_D {
         frame.add(contentPane);
         frame.pack();
         frame.setVisible(true);
+
+        //run random placement method
+        Placement();
+    }
+
+    public void Placement() {
+        int heroX = (int) (Math.random() * 10);
+        int heroY = (int) (Math.random() * 10);
+        spaces[heroX][heroY].setBackground(Color.blue);
+
+        int dragonX = (int) (Math.random() * 10);
+        int dragonY = (int) (Math.random() * 10);
+        spaces[dragonX][dragonY].setBackground(Color.red);
+
+        for (int i = 0; i < 10; i++) {
+            int pitX = (int) (Math.random() * 10);
+            int pitY = (int) (Math.random() * 10);
+            spaces[pitX][pitY].setBackground(Color.green);
+        }
+
+        int arrowX = (int) (Math.random() * 10);
+        int arrowY = (int) (Math.random() * 10);
+        spaces[arrowX][arrowY].setBackground(Color.orange);
+    }
+
+    public void Movement() {
+        
     }
 
     private static void runGUI() {
