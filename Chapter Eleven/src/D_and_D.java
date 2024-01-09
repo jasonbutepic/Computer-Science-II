@@ -8,7 +8,7 @@ public class D_and_D {
     JButton moveUp, moveRight, moveDown, moveLeft, fire, blank, spaces[][];
     JTextField events;
     JLabel label;
-    int heroX, heroY, arrowX, arrowY, ropeX, ropeY;
+    int heroX, heroY, arrowX, arrowY, ropeX, ropeY, dragonX, dragonY;
 
     public D_and_D() {
         frame = new JFrame("Dungeons and Dragons");
@@ -118,16 +118,22 @@ public class D_and_D {
             spaces[pitX][pitY].setBackground(Color.green);
         }
 
+        do {
         arrowX = (int) (Math.random() * 10);
         arrowY = (int) (Math.random() * 10);
+        } while (spaces[arrowX][arrowY].getBackground() != Color.gray);
         spaces[arrowX][arrowY].setBackground(Color.orange);
 
+        do {
         heroX = (int) (Math.random() * 10);
         heroY = (int) (Math.random() * 10);
+        } while (spaces[heroX][heroY].getBackground() != Color.gray);
         spaces[heroX][heroY].setBackground(Color.blue);
 
-        int dragonX = (int) (Math.random() * 10);
-        int dragonY = (int) (Math.random() * 10);
+        do {
+        dragonX = (int) (Math.random() * 10);
+        dragonY = (int) (Math.random() * 10);
+        } while (spaces[dragonX][dragonY].getBackground() != Color.gray);
         spaces[dragonX][dragonY].setBackground(Color.red);
     }
 
