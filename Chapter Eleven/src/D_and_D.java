@@ -118,6 +118,9 @@ public class D_and_D implements ActionListener {
     }
 
     public void Placement() {
+
+        // for checking area around, make sure that the empty space does not have any negative numbers
+
         for (int i = 0; i < 10; i++) {
             int pitX = (int) (Math.random() * 10);
             int pitY = (int) (Math.random() * 10);
@@ -127,58 +130,25 @@ public class D_and_D implements ActionListener {
         do {
             arrowX = (int) (Math.random() * 10);
             arrowY = (int) (Math.random() * 10);
-            if (spaces[arrowX--][arrowY].getBackground() == Color.green && spaces[arrowX++][arrowY].getBackground() == Color.green && spaces[arrowX][arrowY--].getBackground() == Color.green && spaces[arrowX][arrowY++].getBackground() == Color.green) {
-                remove = (int) (Math.random() * 4);
-                if (remove == 0) {
-                    spaces[arrowX--][arrowY].setBackground(Color.gray);
-                } else if (remove == 1) {
-                    spaces[arrowX++][arrowY].setBackground(Color.gray);
-                } else if (remove == 2) {
-                    spaces[arrowX][arrowY--].setBackground(Color.gray);
-                } else if (remove == 3) {
-                    spaces[arrowX][arrowY++].setBackground(Color.gray);
-                }
-            }
         } while (spaces[arrowX][arrowY].getBackground() != Color.gray);
         spaces[arrowX][arrowY].setBackground(Color.orange);
 
         do {
             heroX = (int) (Math.random() * 10);
             heroY = (int) (Math.random() * 10);
-            if (spaces[heroX--][heroY].getBackground() == Color.green && spaces[heroX++][heroY].getBackground() == Color.green && spaces[heroX][heroY--].getBackground() == Color.green && spaces[heroX][heroY++].getBackground() == Color.green) {
-                remove = (int) (Math.random() * 4);
-                if (remove == 0) {
-                    spaces[heroX--][heroY].setBackground(Color.gray);
-                } else if (remove == 1) {
-                    spaces[heroX++][heroY].setBackground(Color.gray);
-                } else if (remove == 2) {
-                    spaces[heroX][heroY--].setBackground(Color.gray);
-                } else if (remove == 3) {
-                    spaces[heroX][heroY++].setBackground(Color.gray);
-                }
         } while (spaces[heroX][heroY].getBackground() != Color.gray);
         spaces[heroX][heroY].setBackground(Color.blue);
 
         do {
             dragonX = (int) (Math.random() * 10);
             dragonY = (int) (Math.random() * 10);
-            if (spaces[dragonX--][dragonY].getBackground() == Color.green && spaces[dragonX++][dragonY].getBackground() == Color.green && spaces[dragonX][dragonY--].getBackground() == Color.green && spaces[dragonX][dragonY++].getBackground() == Color.green) {
-                remove = (int) (Math.random() * 4);
-                if (remove == 0) {
-                    spaces[dragonX--][dragonY].setBackground(Color.gray);
-                } else if (remove == 1) {
-                    spaces[dragonX++][dragonY].setBackground(Color.gray);
-                } else if (remove == 2) {
-                    spaces[dragonX][dragonY--].setBackground(Color.gray);
-                } else if (remove == 3) {
-                    spaces[dragonX][dragonY++].setBackground(Color.gray);
-                }
-            }
         } while (spaces[dragonX][dragonY].getBackground() != Color.gray);
         spaces[dragonX][dragonY].setBackground(Color.red);
     }
 
     public void Movement() {
+
+
         String eventName;
 
         spaces[heroY][heroX].setBackground(Color.gray);
