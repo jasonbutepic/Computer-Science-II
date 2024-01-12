@@ -2,13 +2,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class D_and_D {
+public class D_and_D implements ActionListener {
     JFrame frame;
     JPanel movePanel, dungeonBoard, textPanel, contentPane;
     JButton moveUp, moveRight, moveDown, moveLeft, fire, blank, spaces[][];
     JTextField events;
     JLabel label;
-    int heroX, heroY, arrowX, arrowY, ropeX, ropeY, dragonX, dragonY;
+    int heroX, heroY, arrowX, arrowY, ropeX, ropeY, dragonX, dragonY, remove;
 
     public D_and_D() {
         frame = new JFrame("Dungeons and Dragons");
@@ -30,6 +30,8 @@ public class D_and_D {
 
         moveUp = new JButton("Up");
         moveUp.setPreferredSize(new Dimension(150, 150));
+        moveUp.setActionCommand("UP");
+        moveUp.addActionListener(this);
         movePanel.add(moveUp);
 
         blank = new JButton(" ");
@@ -40,6 +42,8 @@ public class D_and_D {
 
         moveLeft = new JButton("Left");
         moveLeft.setPreferredSize(new Dimension(150, 150));
+        moveLeft.setActionCommand("LEFT");
+        moveLeft.addActionListener(this);
         movePanel.add(moveLeft);
 
         blank = new JButton(" ");
@@ -50,6 +54,8 @@ public class D_and_D {
 
         moveRight = new JButton("Right");
         moveRight.setPreferredSize(new Dimension(150, 150));
+        moveRight.setActionCommand("RIGHT");
+        moveRight.addActionListener(this);
         movePanel.add(moveRight);
 
         blank = new JButton(" ");
@@ -60,6 +66,8 @@ public class D_and_D {
 
         moveDown = new JButton("Down");
         moveDown.setPreferredSize(new Dimension(150, 150));
+        moveDown.setActionCommand("DOWN");
+        moveDown.addActionListener(this);
         movePanel.add(moveDown);
 
         blank = new JButton(" ");
@@ -84,8 +92,6 @@ public class D_and_D {
                 dungeonBoard.add(spaces[i][j]);
             }
         }
-
-        
 
         textPanel = new JPanel();
         textPanel.setPreferredSize(new Dimension(400, 100));
@@ -119,27 +125,90 @@ public class D_and_D {
         }
 
         do {
-        arrowX = (int) (Math.random() * 10);
-        arrowY = (int) (Math.random() * 10);
+            arrowX = (int) (Math.random() * 10);
+            arrowY = (int) (Math.random() * 10);
+            if (spaces[arrowX--][arrowY].getBackground() == Color.green && spaces[arrowX++][arrowY].getBackground() == Color.green && spaces[arrowX][arrowY--].getBackground() == Color.green && spaces[arrowX][arrowY++].getBackground() == Color.green) {
+                remove = (int) (Math.random() * 4);
+                if (remove == 0) {
+                    spaces[arrowX--][arrowY].setBackground(Color.gray);
+                } else if (remove == 1) {
+                    spaces[arrowX++][arrowY].setBackground(Color.gray);
+                } else if (remove == 2) {
+                    spaces[arrowX][arrowY--].setBackground(Color.gray);
+                } else if (remove == 3) {
+                    spaces[arrowX][arrowY++].setBackground(Color.gray);
+                }
+            }
         } while (spaces[arrowX][arrowY].getBackground() != Color.gray);
         spaces[arrowX][arrowY].setBackground(Color.orange);
 
         do {
-        heroX = (int) (Math.random() * 10);
-        heroY = (int) (Math.random() * 10);
+            heroX = (int) (Math.random() * 10);
+            heroY = (int) (Math.random() * 10);
+            if (spaces[heroX--][heroY].getBackground() == Color.green && spaces[heroX++][heroY].getBackground() == Color.green && spaces[heroX][heroY--].getBackground() == Color.green && spaces[heroX][heroY++].getBackground() == Color.green) {
+                remove = (int) (Math.random() * 4);
+                if (remove == 0) {
+                    spaces[heroX--][heroY].setBackground(Color.gray);
+                } else if (remove == 1) {
+                    spaces[heroX++][heroY].setBackground(Color.gray);
+                } else if (remove == 2) {
+                    spaces[heroX][heroY--].setBackground(Color.gray);
+                } else if (remove == 3) {
+                    spaces[heroX][heroY++].setBackground(Color.gray);
+                }
         } while (spaces[heroX][heroY].getBackground() != Color.gray);
         spaces[heroX][heroY].setBackground(Color.blue);
 
         do {
-        dragonX = (int) (Math.random() * 10);
-        dragonY = (int) (Math.random() * 10);
+            dragonX = (int) (Math.random() * 10);
+            dragonY = (int) (Math.random() * 10);
+            if (spaces[dragonX--][dragonY].getBackground() == Color.green && spaces[dragonX++][dragonY].getBackground() == Color.green && spaces[dragonX][dragonY--].getBackground() == Color.green && spaces[dragonX][dragonY++].getBackground() == Color.green) {
+                remove = (int) (Math.random() * 4);
+                if (remove == 0) {
+                    spaces[dragonX--][dragonY].setBackground(Color.gray);
+                } else if (remove == 1) {
+                    spaces[dragonX++][dragonY].setBackground(Color.gray);
+                } else if (remove == 2) {
+                    spaces[dragonX][dragonY--].setBackground(Color.gray);
+                } else if (remove == 3) {
+                    spaces[dragonX][dragonY++].setBackground(Color.gray);
+                }
+            }
         } while (spaces[dragonX][dragonY].getBackground() != Color.gray);
         spaces[dragonX][dragonY].setBackground(Color.red);
     }
 
     public void Movement() {
-        
+        String eventName;
+
+        spaces[heroY][heroX].setBackground(Color.gray);
+
+        if (eventName.equals("UP")) {
+            heroY--;
+        } else if (eventName.equals("DOWN")) {
+            heroY++;
+        } else if (eventName.equals("LEFT")) {
+            heroX--;
+        } else if (eventName.equals("RIGHT")) {
+            heroX++;
+        }
+
+        // Magic room (if < 0, go to max)
+        if (heroX < 0) {
+            heroX = 9;
+        } else if (heroX > 9) {
+            heroX = 0;
+        }
+
+        if (heroY < 0) {
+            heroY = 9;
+        } else if (heroY > 9) {
+            heroY = 0;
+        }
+
+        spaces[heroY][heroX].setBackground(Color.blue);
     }
+
 
     private static void runGUI() {
         JFrame.setDefaultLookAndFeelDecorated(true);
@@ -152,5 +221,10 @@ public class D_and_D {
                 runGUI();
             }
         });
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Movement();
     }
 }
