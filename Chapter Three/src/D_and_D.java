@@ -6,11 +6,12 @@ public class D_and_D {
     JFrame frame;
     JPanel movePanel, dungeonBoard, textPanel, contentPane;
     JButton moveUp, moveRight, moveDown, moveLeft, fire, blank, spaces[][];
-    JTextField events, inventory;
+    JTextField events;
     JLabel label;
     int heroX, heroY, arrowX, arrowY, ropeX, ropeY, dragonX, dragonY, remove, rope = 1, arrow = 1, pitCheck = 0, saveX, saveY;
+
     public D_and_D() {
-        frame = new JFrame("Dungeons and Dragons and Drive-Ins and Dives");
+        frame = new JFrame("Dungeons and Dragons");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         contentPane = new JPanel();
@@ -30,13 +31,13 @@ public class D_and_D {
         moveUp = new JButton("Up");
         moveUp.setPreferredSize(new Dimension(150, 150));
         moveUp.setActionCommand("UP");
-        moveUp.addActionListener(new ActionListener() {
+        moveLeft.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 spaces[heroX][heroY].setBackground(Color.gray);
                 saveX = heroX;
                 saveY = heroY;
-                heroX--;
+                heroY--;
                 if (heroX < 0) {
                     heroX = 9;
                 } else if (heroX > 9) {
@@ -67,9 +68,7 @@ public class D_and_D {
             @Override
             public void actionPerformed(ActionEvent e) {
                 spaces[heroX][heroY].setBackground(Color.gray);
-                saveX = heroX;
-                saveY = heroY;
-                heroY--;
+                heroX--;
                 if (heroX < 0) {
                     heroX = 9;
                 } else if (heroX > 9) {
@@ -96,13 +95,11 @@ public class D_and_D {
         moveRight = new JButton("Right");
         moveRight.setPreferredSize(new Dimension(150, 150));
         moveRight.setActionCommand("RIGHT");
-        moveRight.addActionListener(new ActionListener() {
+        moveLeft.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 spaces[heroX][heroY].setBackground(Color.gray);
-                saveX = heroX;
-                saveY = heroY;
-                heroY++;
+                heroX++;
                 if (heroX < 0) {
                     heroX = 9;
                 } else if (heroX > 9) {
@@ -129,13 +126,11 @@ public class D_and_D {
         moveDown = new JButton("Down");
         moveDown.setPreferredSize(new Dimension(150, 150));
         moveDown.setActionCommand("DOWN");
-        moveDown.addActionListener(new ActionListener() {
+        moveLeft.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 spaces[heroX][heroY].setBackground(Color.gray);
-                saveX = heroX;
-                saveY = heroY;
-                heroX++;
+                heroY++;
                 if (heroX < 0) {
                     heroX = 9;
                 } else if (heroX > 9) {
@@ -226,27 +221,25 @@ public class D_and_D {
             events.setText("You have found the rope!");
             spaces[x][y].setBackground(Color.gray);
             rope++;
-        } 
-        
-        if (spaces[x][y-1].getBackground() == Color.green || spaces[x][y+1].getBackground() == Color.green || spaces[x-1][y].getBackground() == Color.green || spaces[x+1][y].getBackground() == Color.green) {
-            if (spaces[x][y-1].getBackground() == Color.green) {
+        } else if (spaces[x][y--].getBackground() == Color.green || spaces[x][y++].getBackground() == Color.green || spaces[x--][y].getBackground() == Color.green || spaces[x++][y].getBackground() == Color.green) {
+            if (spaces[x][y--].getBackground() == Color.green) {
                 pitCheck++;
-            } else if (spaces[x][y+1].getBackground() == Color.green) {
+            } else if (spaces[x][y++].getBackground() == Color.green) {
                 pitCheck++;
-            } else if (spaces[x-1][y].getBackground() == Color.green) {
+            } else if (spaces[x--][y].getBackground() == Color.green) {
                 pitCheck++;
-            } else if (spaces[x+1][y].getBackground() == Color.green) {
+            } else if (spaces[x++][y].getBackground() == Color.green) {
                 pitCheck++;
             }
 
             if (pitCheck >= 1) {
                 events.setText("There are " + pitCheck + " pits around you!");
             }
-        } else if (spaces[x][y-1].getBackground() == Color.red || spaces[x][y+1].getBackground() == Color.red || spaces[x-1][y].getBackground() == Color.red || spaces[x+1][y].getBackground() == Color.red) {
+        } else if (spaces[x][y--].getBackground() == Color.red || spaces[x][y++].getBackground() == Color.red || spaces[x--][y].getBackground() == Color.red || spaces[x++][y].getBackground() == Color.red) {
             events.setText("There is a dragon around you!");
-        } else if (spaces[x][y-1].getBackground() == Color.orange || spaces[x][y+1].getBackground() == Color.orange || spaces[x-1][y].getBackground() == Color.orange || spaces[x+1][y].getBackground() == Color.orange) {
+        } else if (spaces[x][y--].getBackground() == Color.orange || spaces[x][y++].getBackground() == Color.orange || spaces[x--][y].getBackground() == Color.orange || spaces[x++][y].getBackground() == Color.orange) {
             events.setText("There is an arrow around you!");
-        } else if (spaces[x][y-1].getBackground() == Color.white || spaces[x][y+1].getBackground() == Color.white || spaces[x-1][y].getBackground() == Color.white || spaces[x+1][y].getBackground() == Color.white) {
+        } else if (spaces[x][y--].getBackground() == Color.white || spaces[x][y++].getBackground() == Color.white || spaces[x--][y].getBackground() == Color.white || spaces[x++][y].getBackground() == Color.white) {
             events.setText("There is a rope around you!");
         }
     }
