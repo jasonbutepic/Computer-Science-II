@@ -37,17 +37,7 @@ public class D_and_D {
                 saveX = heroX;
                 saveY = heroY;
                 heroX--;
-                if (heroX < 0) {
-                    heroX = 9;
-                } else if (heroX > 9) {
-                    heroX = 0;
-                }
-
-                if (heroY < 0) {
-                    heroY = 9;
-                } else if (heroY > 9) {
-                    heroY = 0;
-                }
+                heroX = (heroX + 10) % 10;
                 spaces[heroX][heroY].setBackground(Color.blue);
                 heroCheck(heroX, heroY, saveX, saveY);
             }
@@ -70,17 +60,7 @@ public class D_and_D {
                 saveX = heroX;
                 saveY = heroY;
                 heroY--;
-                if (heroX < 0) {
-                    heroX = 9;
-                } else if (heroX > 9) {
-                    heroX = 0;
-                }
-
-                if (heroY < 0) {
-                    heroY = 9;
-                } else if (heroY > 9) {
-                    heroY = 0;
-                }
+                heroY = (heroY + 10) % 10;
                 spaces[heroX][heroY].setBackground(Color.blue);
                 heroCheck(heroX, heroY, saveX, saveY);
             }
@@ -103,17 +83,7 @@ public class D_and_D {
                 saveX = heroX;
                 saveY = heroY;
                 heroY++;
-                if (heroX < 0) {
-                    heroX = 9;
-                } else if (heroX > 9) {
-                    heroX = 0;
-                }
-
-                if (heroY < 0) {
-                    heroY = 9;
-                } else if (heroY > 9) {
-                    heroY = 0;
-                }
+                heroY = (heroY + 10) % 10;
                 spaces[heroX][heroY].setBackground(Color.blue);
                 heroCheck(heroX, heroY, saveX, saveY);
             }
@@ -136,17 +106,7 @@ public class D_and_D {
                 saveX = heroX;
                 saveY = heroY;
                 heroX++;
-                if (heroX < 0) {
-                    heroX = 9;
-                } else if (heroX > 9) {
-                    heroX = 0;
-                }
-
-                if (heroY < 0) {
-                    heroY = 9;
-                } else if (heroY > 9) {
-                    heroY = 0;
-                }
+                heroX = (heroX + 10) % 10;
                 spaces[heroX][heroY].setBackground(Color.blue);
                 heroCheck(heroX, heroY, saveX, saveY);
             }
@@ -201,21 +161,27 @@ public class D_and_D {
 
     public void heroCheck(int x, int y, int saveX, int saveY) {
         if (spaces[x][y].getBackground() == Color.red) {
-            events.setText("You have been eaten by the dragon! You have died!");
+            if (arrow < 1) {
+                events.setText("You have died!");
+                //end game and close program
+            } else {
+                events.setText("You have killed the dragon! You win!");
+            }
             //end game and close program
         } else if (spaces[x][y].getBackground() == Color.green) {
-            events.setText("You have fallen into a pit!");
             if (rope < 1) {
                 events.setText("You have died!");
                 //end game and close program
             } else {
-                events.setText("You have used the rope to climb out of the pit!");
+                events.setText("You have used the rope to climb out of the pit, but lost the rope!");
+                heroX = saveX;
+                heroY = saveY;
                 rope--;
-                for (int i = 0; i < 10; i++) {
-                    int ropeX = (int) (Math.random() * 10);
-                    int ropeY = (int) (Math.random() * 10);
-                    spaces[ropeX][ropeY].setBackground(Color.white);
-                }
+                do {
+                    ropeX = (int) (Math.random() * 10);
+                    ropeY = (int) (Math.random() * 10);
+                } while (spaces[ropeX][ropeY].getBackground() != Color.gray);
+                spaces[ropeX][ropeY].setBackground(Color.white);
                 
             }
         } else if (spaces[x][y].getBackground() == Color.orange) {
@@ -228,25 +194,33 @@ public class D_and_D {
             rope++;
         } 
         
-        if (spaces[x][y-1].getBackground() == Color.green || spaces[x][y+1].getBackground() == Color.green || spaces[x-1][y].getBackground() == Color.green || spaces[x+1][y].getBackground() == Color.green) {
-            if (spaces[x][y-1].getBackground() == Color.green) {
+        if (spaces[x][((y-1) + 10) % 10].getBackground() == Color.green || spaces[x][((y+1) + 10) % 10].getBackground() == Color.green || spaces[((x-1) + 10) % 10][y].getBackground() == Color.green || spaces[((x+1) + 10) % 10][y].getBackground() == Color.green) {
+            pitCheck = 0;
+
+            if (spaces[x][((y-1) + 10) % 10].getBackground() == Color.green) {
                 pitCheck++;
-            } else if (spaces[x][y+1].getBackground() == Color.green) {
+            }
+            
+            if (spaces[x][((y+1) + 10) % 10].getBackground() == Color.green) {
                 pitCheck++;
-            } else if (spaces[x-1][y].getBackground() == Color.green) {
+            } 
+            
+            if (spaces[((x-1) + 10) % 10][y].getBackground() == Color.green) {
                 pitCheck++;
-            } else if (spaces[x+1][y].getBackground() == Color.green) {
+            } 
+            
+            if (spaces[((x+1) + 10) % 10][y].getBackground() == Color.green) {
                 pitCheck++;
             }
 
             if (pitCheck >= 1) {
                 events.setText("There are " + pitCheck + " pits around you!");
             }
-        } else if (spaces[x][y-1].getBackground() == Color.red || spaces[x][y+1].getBackground() == Color.red || spaces[x-1][y].getBackground() == Color.red || spaces[x+1][y].getBackground() == Color.red) {
+        } else if (spaces[x][((y-1) + 10) % 10].getBackground() == Color.red || spaces[x][((y+1) + 10) % 10].getBackground() == Color.red || spaces[((x-1) + 10) % 10][y].getBackground() == Color.red || spaces[((x+1) + 10) % 10][y].getBackground() == Color.red) {
             events.setText("There is a dragon around you!");
-        } else if (spaces[x][y-1].getBackground() == Color.orange || spaces[x][y+1].getBackground() == Color.orange || spaces[x-1][y].getBackground() == Color.orange || spaces[x+1][y].getBackground() == Color.orange) {
+        } else if (spaces[x][((y-1) + 10) % 10].getBackground() == Color.orange || spaces[x][((y+1) + 10) % 10].getBackground() == Color.orange || spaces[((x-1) + 10) % 10][y].getBackground() == Color.orange || spaces[((x+1) + 10) % 10][y].getBackground() == Color.orange) {
             events.setText("There is an arrow around you!");
-        } else if (spaces[x][y-1].getBackground() == Color.white || spaces[x][y+1].getBackground() == Color.white || spaces[x-1][y].getBackground() == Color.white || spaces[x+1][y].getBackground() == Color.white) {
+        } else if (spaces[x][((y-1) + 10) % 10].getBackground() == Color.white || spaces[x][((y+1) + 10) % 10].getBackground() == Color.white || spaces[((x-1) + 10) % 10][y].getBackground() == Color.white || spaces[((x+1) + 10) % 10][y].getBackground() == Color.white) {
             events.setText("There is a rope around you!");
         }
     }
