@@ -216,39 +216,13 @@ public class D_and_D {
         if (spaces[x][((y-1) + 10) % 10].getBackground() == Color.white || spaces[x][((y+1) + 10) % 10].getBackground() == Color.white || spaces[((x-1) + 10) % 10][y].getBackground() == Color.white || spaces[((x+1) + 10) % 10][y].getBackground() == Color.white) {
             ropeMessage = true;
         }
-
-        if (spaces[x][y].getBackground() == Color.red) {
-            if (arrow < 1) {
-                frame.dispose();
-                resultFrame.setVisible(true);
-                resultLabel.setText("You have died to the dragon! Try bringing an arrow into the room next time!");
-            } else {
-                frame.dispose();
-                resultFrame.setVisible(true);
-                resultLabel.setText("You have killed the dragon and won the game!");
-            }
-        } else if (spaces[x][y].getBackground() == Color.green) {
-            if (rope < 1) {
-                frame.dispose();
-                resultFrame.setVisible(true);
-                resultLabel.setText("You have died to a pit! If you had a rope, you could've climbed out!");
-            } else {
-                events.setText("You have used the rope to climb out of the pit, but lost the rope!");
-                heroX = saveX;
-                heroY = saveY;
-                spaces[heroX][heroY].setBackground(Color.blue);
-                rope--;
-                do {
-                    ropeX = (int) (Math.random() * 10);
-                    ropeY = (int) (Math.random() * 10);
-                } while (spaces[ropeX][ropeY].getBackground() != Color.gray);
-                spaces[ropeX][ropeY].setBackground(Color.white);
-                
-            }
-        } else if (spaces[x][y].getBackground() == Color.orange) {
+        
+        if (spaces[x][y].getBackground() == Color.orange) {
             arrowCheck = true;
             arrow++;
-        } else if (spaces[x][y].getBackground() == Color.white) {
+        }
+            
+        if (spaces[x][y].getBackground() == Color.white) {
             ropeCheck = true;
             rope++;
         }
@@ -384,6 +358,36 @@ public class D_and_D {
         }
 
         spaces[heroX][heroY].setBackground(Color.blue);
+
+        if (spaces[x][y].getBackground() == Color.red) {
+            if (arrow < 1) {
+                frame.dispose();
+                resultFrame.setVisible(true);
+                resultLabel.setText("You have died to the dragon! Try bringing an arrow into the room next time!");
+            } else {
+                frame.dispose();
+                resultFrame.setVisible(true);
+                resultLabel.setText("You have killed the dragon and won the game!");
+            }
+        } else if (spaces[x][y].getBackground() == Color.green) {
+            if (rope < 1) {
+                frame.dispose();
+                resultFrame.setVisible(true);
+                resultLabel.setText("You have died to a pit! If you had a rope, you could've climbed out!");
+            } else {
+                events.setText("You have used the rope to climb out of the pit, but lost the rope!");
+                heroX = saveX;
+                heroY = saveY;
+                spaces[heroX][heroY].setBackground(Color.blue);
+                rope--;
+                do {
+                    ropeX = (int) (Math.random() * 10);
+                    ropeY = (int) (Math.random() * 10);
+                } while (spaces[ropeX][ropeY].getBackground() != Color.gray);
+                spaces[ropeX][ropeY].setBackground(Color.white);
+                
+            }
+        } 
         
     }
 
