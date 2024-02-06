@@ -3,12 +3,13 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class D_and_D {
-    JFrame frame;
-    JPanel movePanel, dungeonBoard, textPanel, contentPane;
+    JFrame frame, resultFrame;
+    JPanel movePanel, dungeonBoard, textPanel, contentPane, resultPanel;
     JButton moveUp, moveRight, moveDown, moveLeft, fire, blank, spaces[][];
     JTextField events, inventory;
-    JLabel label;
-    int heroX, heroY, arrowX, arrowY, ropeX, ropeY, dragonX, dragonY, remove, rope = 1, arrow = 1, pitCheck = 0, saveX, saveY;
+    JLabel label, resultLabel;
+    int heroX, heroY, arrowX, arrowY, ropeX, ropeY, dragonX, dragonY, remove, rope = 1, arrow = 0, pitCheck = 0, saveX, saveY;
+    boolean pitMessage, dragonMessage, arrowMessage, ropeMessage, arrowCheck, ropeCheck;
     public D_and_D() {
         frame = new JFrame("Dungeons and Dragons and Drive-Ins and Dives");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,18 +38,7 @@ public class D_and_D {
                 saveX = heroX;
                 saveY = heroY;
                 heroX--;
-                if (heroX < 0) {
-                    heroX = 9;
-                } else if (heroX > 9) {
-                    heroX = 0;
-                }
-
-                if (heroY < 0) {
-                    heroY = 9;
-                } else if (heroY > 9) {
-                    heroY = 0;
-                }
-                spaces[heroX][heroY].setBackground(Color.blue);
+                heroX = (heroX + 10) % 10;
                 heroCheck(heroX, heroY, saveX, saveY);
             }
         });
@@ -70,18 +60,7 @@ public class D_and_D {
                 saveX = heroX;
                 saveY = heroY;
                 heroY--;
-                if (heroX < 0) {
-                    heroX = 9;
-                } else if (heroX > 9) {
-                    heroX = 0;
-                }
-
-                if (heroY < 0) {
-                    heroY = 9;
-                } else if (heroY > 9) {
-                    heroY = 0;
-                }
-                spaces[heroX][heroY].setBackground(Color.blue);
+                heroY = (heroY + 10) % 10;
                 heroCheck(heroX, heroY, saveX, saveY);
             }
         });
@@ -103,18 +82,7 @@ public class D_and_D {
                 saveX = heroX;
                 saveY = heroY;
                 heroY++;
-                if (heroX < 0) {
-                    heroX = 9;
-                } else if (heroX > 9) {
-                    heroX = 0;
-                }
-
-                if (heroY < 0) {
-                    heroY = 9;
-                } else if (heroY > 9) {
-                    heroY = 0;
-                }
-                spaces[heroX][heroY].setBackground(Color.blue);
+                heroY = (heroY + 10) % 10;
                 heroCheck(heroX, heroY, saveX, saveY);
             }
         });
@@ -136,18 +104,7 @@ public class D_and_D {
                 saveX = heroX;
                 saveY = heroY;
                 heroX++;
-                if (heroX < 0) {
-                    heroX = 9;
-                } else if (heroX > 9) {
-                    heroX = 0;
-                }
-
-                if (heroY < 0) {
-                    heroY = 9;
-                } else if (heroY > 9) {
-                    heroY = 0;
-                }
-                spaces[heroX][heroY].setBackground(Color.blue);
+                heroX = (heroX + 10) % 10;
                 heroCheck(heroX, heroY, saveX, saveY);
             }
         });
@@ -166,6 +123,22 @@ public class D_and_D {
         dungeonBoard.setBackground(Color.WHITE);
 
         spaces = new JButton[10][10]; // Initialize the spaces array
+
+        resultFrame = new JFrame();
+        resultFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        resultPanel = new JPanel();
+        resultPanel.setPreferredSize(new Dimension(600, 100));
+        resultPanel.setBorder(BorderFactory.createEmptyBorder(0, 20, 20, 20));
+        resultPanel.setLayout(new GridLayout(1, 1));
+        resultPanel.setBackground(Color.WHITE);
+        resultFrame.add(resultPanel);
+
+        resultLabel = new JLabel();
+        resultPanel.add(resultLabel);
+
+        resultFrame.pack();
+        resultFrame.setVisible(false);
 
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
@@ -200,55 +173,224 @@ public class D_and_D {
     }
 
     public void heroCheck(int x, int y, int saveX, int saveY) {
-        if (spaces[x][y].getBackground() == Color.red) {
-            events.setText("You have been eaten by the dragon! You have died!");
-            //end game and close program
-        } else if (spaces[x][y].getBackground() == Color.green) {
-            events.setText("You have fallen into a pit!");
-            if (rope < 1) {
-                events.setText("You have died!");
-                //end game and close program
-            } else {
-                events.setText("You have used the rope to climb out of the pit!");
-                rope--;
-                for (int i = 0; i < 10; i++) {
-                    int ropeX = (int) (Math.random() * 10);
-                    int ropeY = (int) (Math.random() * 10);
-                    spaces[ropeX][ropeY].setBackground(Color.white);
-                }
-                
-            }
-        } else if (spaces[x][y].getBackground() == Color.orange) {
-            events.setText("You have found the arrow!");
-            spaces[x][y].setBackground(Color.gray);
-            arrow++;
-        } else if (spaces[x][y].getBackground() == Color.white) {
-            events.setText("You have found the rope!");
-            spaces[x][y].setBackground(Color.gray);
-            rope++;
-        } 
+        pitMessage = false;
+        dragonMessage = false;
+        arrowMessage = false;
+        ropeMessage = false;
+        arrowCheck = false;
+        ropeCheck = false;
+        pitCheck = 0;
+
         
-        if (spaces[x][y-1].getBackground() == Color.green || spaces[x][y+1].getBackground() == Color.green || spaces[x-1][y].getBackground() == Color.green || spaces[x+1][y].getBackground() == Color.green) {
-            if (spaces[x][y-1].getBackground() == Color.green) {
+        
+        if (spaces[x][((y-1) + 10) % 10].getBackground() == Color.green || spaces[x][((y+1) + 10) % 10].getBackground() == Color.green || spaces[((x-1) + 10) % 10][y].getBackground() == Color.green || spaces[((x+1) + 10) % 10][y].getBackground() == Color.green) {
+            if (spaces[x][((y-1) + 10) % 10].getBackground() == Color.green) {
                 pitCheck++;
-            } else if (spaces[x][y+1].getBackground() == Color.green) {
+            }
+            
+            if (spaces[x][((y+1) + 10) % 10].getBackground() == Color.green) {
                 pitCheck++;
-            } else if (spaces[x-1][y].getBackground() == Color.green) {
+            } 
+            
+            if (spaces[((x-1) + 10) % 10][y].getBackground() == Color.green) {
                 pitCheck++;
-            } else if (spaces[x+1][y].getBackground() == Color.green) {
+            } 
+            
+            if (spaces[((x+1) + 10) % 10][y].getBackground() == Color.green) {
                 pitCheck++;
             }
 
             if (pitCheck >= 1) {
-                events.setText("There are " + pitCheck + " pits around you!");
+                pitMessage = true;
             }
-        } else if (spaces[x][y-1].getBackground() == Color.red || spaces[x][y+1].getBackground() == Color.red || spaces[x-1][y].getBackground() == Color.red || spaces[x+1][y].getBackground() == Color.red) {
-            events.setText("There is a dragon around you!");
-        } else if (spaces[x][y-1].getBackground() == Color.orange || spaces[x][y+1].getBackground() == Color.orange || spaces[x-1][y].getBackground() == Color.orange || spaces[x+1][y].getBackground() == Color.orange) {
-            events.setText("There is an arrow around you!");
-        } else if (spaces[x][y-1].getBackground() == Color.white || spaces[x][y+1].getBackground() == Color.white || spaces[x-1][y].getBackground() == Color.white || spaces[x+1][y].getBackground() == Color.white) {
-            events.setText("There is a rope around you!");
+        } 
+        
+        if (spaces[x][((y-1) + 10) % 10].getBackground() == Color.red || spaces[x][((y+1) + 10) % 10].getBackground() == Color.red || spaces[((x-1) + 10) % 10][y].getBackground() == Color.red || spaces[((x+1) + 10) % 10][y].getBackground() == Color.red) {
+            dragonMessage = true;
+        } 
+        
+        if (spaces[x][((y-1) + 10) % 10].getBackground() == Color.orange || spaces[x][((y+1) + 10) % 10].getBackground() == Color.orange || spaces[((x-1) + 10) % 10][y].getBackground() == Color.orange || spaces[((x+1) + 10) % 10][y].getBackground() == Color.orange) {
+            arrowMessage = true;
+        } 
+        
+        if (spaces[x][((y-1) + 10) % 10].getBackground() == Color.white || spaces[x][((y+1) + 10) % 10].getBackground() == Color.white || spaces[((x-1) + 10) % 10][y].getBackground() == Color.white || spaces[((x+1) + 10) % 10][y].getBackground() == Color.white) {
+            ropeMessage = true;
         }
+
+        if (spaces[x][y].getBackground() == Color.red) {
+            if (arrow < 1) {
+                frame.dispose();
+                resultFrame.setVisible(true);
+                resultLabel.setText("You have died to the dragon! Try bringing an arrow into the room next time!");
+            } else {
+                frame.dispose();
+                resultFrame.setVisible(true);
+                resultLabel.setText("You have killed the dragon and won the game!");
+            }
+        } 
+        
+        if (spaces[x][y].getBackground() == Color.orange) {
+            arrowCheck = true;
+            arrow++;
+        } 
+        
+        if (spaces[x][y].getBackground() == Color.white) {
+            ropeCheck = true;
+            rope++;
+        }
+
+        if (pitMessage == true && dragonMessage == true && arrowMessage == true && ropeMessage == true && arrowCheck == true && ropeCheck == true) {
+            events.setText("There is " + pitCheck + " pit(s), a dragon, an arrow, and a rope near you! You have also picked up the arrow and rope!");
+        } else if (pitMessage == true && dragonMessage == true && arrowMessage == true && ropeMessage == true && arrowCheck == true) {
+            events.setText("There is " + pitCheck + " pit(s), a dragon, an arrow, and a rope near you! You have also picked up the arrow!");
+        } else if (pitMessage == true && dragonMessage == true && arrowMessage == true && ropeMessage == true && ropeCheck == true) {
+            events.setText("There is " + pitCheck + " pit(s), a dragon, an arrow, and a rope near you! You have also picked up the rope!");
+        } else if (pitMessage == true && dragonMessage == true && arrowMessage == true && ropeMessage == true) {
+            events.setText("There is " + pitCheck + " pit(s), a dragon, an arrow, and a rope near you!");
+        } else if (pitMessage == true && dragonMessage == true && arrowMessage == true && arrowCheck == true && ropeCheck == true) {
+            events.setText("There is " + pitCheck + " pit(s), a dragon, and an arrow near you! You have also picked up the arrow and rope!");
+        } else if (pitMessage == true && dragonMessage == true && arrowMessage == true && arrowCheck == true) {
+            events.setText("There is " + pitCheck + " pit(s), a dragon, and an arrow near you! You have also picked up the arrow!");
+        } else if (pitMessage == true && dragonMessage == true && arrowMessage == true && ropeCheck == true) {
+            events.setText("There is " + pitCheck + " pit(s), a dragon, and an arrow near you! You have also picked up the rope!");
+        } else if (pitMessage == true && dragonMessage == true && arrowMessage == true) {
+            events.setText("There is " + pitCheck + " pit(s), a dragon, and an arrow near you!");
+        } else if (pitMessage == true && dragonMessage == true && ropeMessage == true && arrowCheck == true && ropeCheck == true) {
+            events.setText("There is " + pitCheck + " pit(s), a dragon, and a rope near you! You have also picked up the arrow and rope!");
+        } else if (pitMessage == true && dragonMessage == true && ropeMessage == true && arrowCheck == true) {
+            events.setText("There is " + pitCheck + " pit(s), a dragon, and a rope near you! You have also picked up the arrow!");
+        } else if (pitMessage == true && dragonMessage == true && ropeMessage == true && ropeCheck == true) {
+            events.setText("There is " + pitCheck + " pit(s), a dragon, and a rope near you! You have also picked up the rope!");
+        } else if (pitMessage == true && dragonMessage == true && ropeMessage == true) {
+            events.setText("There is " + pitCheck + " pit(s), a dragon, and a rope near you!");
+        } else if (pitMessage == true && dragonMessage == true && arrowCheck == true && ropeCheck == true) {
+            events.setText("There is " + pitCheck + " pit(s), a dragon, and an arrow near you! You have also picked up the arrow and rope!");
+        } else if (pitMessage == true && dragonMessage == true && arrowCheck == true) {
+            events.setText("There is " + pitCheck + " pit(s), a dragon, and an arrow near you! You have also picked up the arrow!");
+        } else if (pitMessage == true && dragonMessage == true && ropeCheck == true) {
+            events.setText("There is " + pitCheck + " pit(s), a dragon, and an arrow near you! You have also picked up the rope!");
+        } else if (pitMessage == true && dragonMessage == true) {
+            events.setText("There is " + pitCheck + " pit(s) and a dragon near you!");
+        } else if (pitMessage == true && arrowMessage == true && ropeMessage == true && arrowCheck == true && ropeCheck == true) {
+            events.setText("There is " + pitCheck + " pit(s), an arrow, and a rope near you! You have also picked up the arrow and rope!");
+        } else if (pitMessage == true && arrowMessage == true && ropeMessage == true && arrowCheck == true) {
+            events.setText("There is " + pitCheck + " pit(s), an arrow, and a rope near you! You have also picked up the arrow!");
+        } else if (pitMessage == true && arrowMessage == true && ropeMessage == true && ropeCheck == true) {
+            events.setText("There is " + pitCheck + " pit(s), an arrow, and a rope near you! You have also picked up the rope!");
+        } else if (pitMessage == true && arrowMessage == true && ropeMessage == true) {
+            events.setText("There is " + pitCheck + " pit(s), an arrow, and a rope near you!");
+        } else if (pitMessage == true && arrowMessage == true && arrowCheck == true && ropeCheck == true) {
+            events.setText("There is " + pitCheck + " pit(s), an arrow near you! You have also picked up the arrow and rope!");
+        } else if (pitMessage == true && arrowMessage == true && arrowCheck == true) {
+            events.setText("There is " + pitCheck + " pit(s), an arrow near you! You have also picked up the arrow!");
+        } else if (pitMessage == true && arrowMessage == true && ropeCheck == true) {
+            events.setText("There is " + pitCheck + " pit(s), an arrow near you! You have also picked up the rope!");
+        } else if (pitMessage == true && arrowMessage == true) {
+            events.setText("There is " + pitCheck + " pit(s) and an arrow near you!");
+        } else if (pitMessage == true && ropeMessage == true && arrowCheck == true && ropeCheck == true) {
+            events.setText("There is " + pitCheck + " pit(s), a rope near you! You have also picked up the arrow and rope!");
+        } else if (pitMessage == true && ropeMessage == true && arrowCheck == true) {
+            events.setText("There is " + pitCheck + " pit(s), a rope near you! You have also picked up the arrow!");
+        } else if (pitMessage == true && ropeMessage == true && ropeCheck == true) {
+            events.setText("There is " + pitCheck + " pit(s), a rope near you! You have also picked up the rope!");
+        } else if (pitMessage == true && ropeMessage == true) {
+            events.setText("There is " + pitCheck + " pit(s) and a rope near you!");
+        } else if (pitMessage == true && arrowCheck == true && ropeCheck == true) {
+            events.setText("There is " + pitCheck + " pit(s) near you! You have also picked up the arrow and rope!");
+        } else if (pitMessage == true && arrowCheck == true) {
+            events.setText("There is " + pitCheck + " pit(s) near you! You have also picked up the arrow!");
+        } else if (pitMessage == true && ropeCheck == true) {
+            events.setText("There is " + pitCheck + " pit(s) near you! You have also picked up the rope!");
+        } else if (pitMessage == true) {
+            events.setText("There is " + pitCheck + " pit(s) near you!");
+        } else if (dragonMessage == true && arrowMessage == true && ropeMessage == true && arrowCheck == true && ropeCheck == true) {
+            events.setText("There is a dragon, an arrow, and a rope near you! You have also picked up the arrow and rope!");
+        } else if (dragonMessage == true && arrowMessage == true && ropeMessage == true && arrowCheck == true) {
+            events.setText("There is a dragon, an arrow, and a rope near you! You have also picked up the arrow!");
+        } else if (dragonMessage == true && arrowMessage == true && ropeMessage == true && ropeCheck == true) {
+            events.setText("There is a dragon, an arrow, and a rope near you! You have also picked up the rope!");
+        } else if (dragonMessage == true && arrowMessage == true && ropeMessage == true) {
+            events.setText("There is a dragon, an arrow, and a rope near you!");
+        } else if (dragonMessage == true && arrowMessage == true && arrowCheck == true && ropeCheck == true) {
+            events.setText("There is a dragon and an arrow near you! You have also picked up the arrow and rope!");
+        } else if (dragonMessage == true && arrowMessage == true && arrowCheck == true) {
+            events.setText("There is a dragon and an arrow near you! You have also picked up the arrow!");
+        } else if (dragonMessage == true && arrowMessage == true && ropeCheck == true) {
+            events.setText("There is a dragon and an arrow near you! You have also picked up the rope!");
+        } else if (dragonMessage == true && arrowMessage == true) {
+            events.setText("There is a dragon and an arrow near you!");
+        } else if (dragonMessage == true && ropeMessage == true && arrowCheck == true && ropeCheck == true) {
+            events.setText("There is a dragon and a rope near you! You have also picked up the arrow and rope!");
+        } else if (dragonMessage == true && ropeMessage == true && arrowCheck == true) {
+            events.setText("There is a dragon and a rope near you! You have also picked up the arrow!");
+        } else if (dragonMessage == true && ropeMessage == true && ropeCheck == true) {
+            events.setText("There is a dragon and a rope near you! You have also picked up the rope!");
+        } else if (dragonMessage == true && ropeMessage == true) {
+            events.setText("There is a dragon and a rope near you!");
+        } else if (dragonMessage == true && arrowCheck == true && ropeCheck == true) {
+            events.setText("There is a dragon near you! You have also picked up the arrow and rope!");
+        } else if (dragonMessage == true && arrowCheck == true) {
+            events.setText("There is a dragon near you! You have also picked up the arrow!");
+        } else if (dragonMessage == true && ropeCheck == true) {
+            events.setText("There is a dragon near you! You have also picked up the rope!");
+        } else if (dragonMessage == true) {
+            events.setText("There is a dragon near you!");
+        } else if (arrowMessage == true && ropeMessage == true && arrowCheck == true && ropeCheck == true) {
+            events.setText("There is an arrow and a rope near you! You have also picked up the arrow and rope!");
+        } else if (arrowMessage == true && ropeMessage == true && arrowCheck == true) {
+            events.setText("There is an arrow and a rope near you! You have also picked up the arrow!");
+        } else if (arrowMessage == true && ropeMessage == true && ropeCheck == true) {
+            events.setText("There is an arrow and a rope near you! You have also picked up the rope!");
+        } else if (arrowMessage == true && ropeMessage == true) {
+            events.setText("There is an arrow and a rope near you!");
+        } else if (arrowMessage == true && arrowCheck == true && ropeCheck == true) {
+            events.setText("There is an arrow near you! You have also picked up the arrow and rope!");
+        } else if (arrowMessage == true && arrowCheck == true) {
+            events.setText("There is an arrow near you! You have also picked up the arrow!");
+        } else if (arrowMessage == true && ropeCheck == true) {
+            events.setText("There is an arrow near you! You have also picked up the rope!");
+        } else if (arrowMessage == true) {
+            events.setText("There is an arrow near you!");
+        } else if (ropeMessage == true && arrowCheck == true && ropeCheck == true) {
+            events.setText("There is a rope near you! You have also picked up the arrow and rope!");
+        } else if (ropeMessage == true && arrowCheck == true) {
+            events.setText("There is a rope near you! You have also picked up the arrow!");
+        } else if (ropeMessage == true && ropeCheck == true) {
+            events.setText("There is a rope near you! You have also picked up the rope!");
+        } else if (ropeMessage == true) {
+            events.setText("There is a rope near you!");
+        } else if (arrowCheck == true && ropeCheck == true) {
+            events.setText("You have picked up the arrow and rope!");
+        } else if (arrowCheck == true) {
+            events.setText("You have picked up the arrow!");
+        } else if (ropeCheck == true) {
+            events.setText("You have picked up the rope!");
+        } else {
+            events.setText("");
+        }
+
+        if (spaces[x][y].getBackground() == Color.green) {
+            if (rope < 1) {
+                frame.dispose();
+                resultFrame.setVisible(true);
+                resultLabel.setText("You have died to a pit! If you had a rope, you could've climbed out!");
+            } else {
+                events.setText("You have used the rope to climb out of the pit, but lost the rope!");
+                heroX = saveX;
+                heroY = saveY;
+                spaces[heroX][heroY].setBackground(Color.blue);
+                rope--;
+                do {
+                    ropeX = (int) (Math.random() * 10);
+                    ropeY = (int) (Math.random() * 10);
+                } while (spaces[ropeX][ropeY].getBackground() != Color.gray);
+                spaces[ropeX][ropeY].setBackground(Color.white);
+                
+            }
+        } 
+
+        spaces[heroX][heroY].setBackground(Color.blue);
+        
     }
 
     public void Placement() {
@@ -278,6 +420,8 @@ public class D_and_D {
             dragonY = (int) (Math.random() * 10);
         } while (spaces[dragonX][dragonY].getBackground() != Color.gray);
         spaces[dragonX][dragonY].setBackground(Color.red);
+
+        heroCheck(heroX, heroY, saveX, saveY);
     }
 
     private static void runGUI() {

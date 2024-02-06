@@ -1,0 +1,11 @@
+import java.io.*;
+public class File {
+public static void main(String[] args) {
+File textFile = new File("c:\\temp\\supplies.txt");
+if (textFile.exists()) {
+System.out.println("File already exists.");
+} else {
+System.out.println("File does not exist.");
+}
+}
+}
