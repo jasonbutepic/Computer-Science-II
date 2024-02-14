@@ -7,18 +7,25 @@ public class MyFile {
         // TODO Auto-generated method stub
         Scanner input = new Scanner(System.in);
 
-        File file = new File("zzz.txt");
-        System.out.println(file + " has been created.");
+        File MyFile = new File("zzz.txt");
+        System.out.println(MyFile + " has been created.");
 
         System.out.println("Do you want to keep it? (Y/N)");
         String answer = input.nextLine();
 
-        if (answer.equalsIgnoreCase("Y")) {
-            System.out.println("File kept.");
-        } else  {
-            file.delete();
-            System.out.println("File deleted.");
+        try {
+            MyFile.createNewFile();
+            if (answer.equalsIgnoreCase("Y")) {
+                System.out.println("File kept.");
+            } else {
+                MyFile.delete();
+                System.out.println("File deleted.");
+            }
+        } catch (IOException e) {
+            System.out.println("File could not be created.");
+            System.err.println("IOException: " + e.getMessage());
         }
+        
         /* 
         System.out.print("Enter a file: ");
         File textFile = new File(input.nextLine());

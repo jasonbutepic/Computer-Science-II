@@ -2,3 +2,5 @@ Create a Assignment application that reads and then displays the contents of a f
 this assignment. Use Notepad or some other word processor to create the file. Be sure that the file is saved as
 a Text file (TXT). The Assignment application will need to include the correct path to the location of the file.
 If a path is not specified, the file must be placed in the same folder as the Assignment executable file.
+
+Hello Friday

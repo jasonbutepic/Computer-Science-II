@@ -52,19 +52,23 @@
       * pre: none
       * post: The account balance has been returned.
       */
-     public double getBalance() {
-          return(balance);
-     }
+    public double getBalance() {
+        if (balance <= 20) {
+            System.out.println("Low balance");
+        }
+        return(balance);
+    }
  
  
-     /** 
-      * A deposit is made to the account.
-      * pre: none
-      * post: The balance has been increased by the amount of the deposit.
-      */
-     public void deposit(double amt) {
-          balance += amt;
-     }
+    /** 
+     * A deposit is made to the account.
+     * pre: none
+     * post: The balance has been increased by the amount of the deposit.
+     */
+    public void deposit(double amt) {
+        balance += amt;
+        
+    }
  
      
      /** 
@@ -110,6 +114,9 @@
          accountString = acctID + "\n";
          accountString += cust.toString();
          accountString += "Current balance is " + money.format(balance);
+         if (balance <= 20) {
+            System.out.println("Low balance");
+        }
           return(accountString);
      }
  }
