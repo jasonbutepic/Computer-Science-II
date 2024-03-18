@@ -37,4 +37,24 @@ public class Searches {
             }
         }
     }
+
+    public static int TernarySearch (int[] items, int start, int end, int goal) {
+        if (start > end) {
+            return (-1);
+        } else {
+            int oneThird = (start + end) / 3;
+            int twoThirds = (start + end) * 2 / 3;
+            if (goal == items[oneThird]) {
+                return (oneThird);
+            } else if (goal == items[twoThirds]) {
+                return (twoThirds);
+            } else if (goal < items[oneThird]) {
+                return (TernarySearch(items, start, oneThird - 1, goal));
+            } else if (goal < items[twoThirds]) {
+                return (TernarySearch(items, oneThird + 1, twoThirds - 1, goal));
+            } else {
+                return (TernarySearch(items, twoThirds + 1, end, goal));
+            }
+        }
+    }
 }
