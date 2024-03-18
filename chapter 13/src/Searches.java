@@ -38,6 +38,22 @@ public class Searches {
         }
     }
 
+    public static int BinarySearch2(int[] items, int start, int end, int goal) {
+        //searches with the method in a do-while loop and replaces recursive calls with appropriate start and end values
+        int mid;
+        do {
+            mid = (start + end) / 2;
+            if (goal == items[mid]) {
+                break;
+            } else if (goal < items[mid]) {
+                end = mid - 1;
+            } else {
+                start = mid + 1;
+            }
+        } while (start <= end);
+        return mid;
+    }
+
     public static int TernarySearch (int[] items, int start, int end, int goal) {
         if (start > end) {
             return (-1);
