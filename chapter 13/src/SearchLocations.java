@@ -29,7 +29,7 @@ public class SearchLocations {
         System.out.print("Enter a number to search for: ");
         searchNum = input.nextInt();
         while (searchNum != -1) {
-            location = Searches.binarySearch(test, 0,test.length - 1, searchNum);
+            location = Searches.binarySearch(test, 0, test.length - 1, searchNum);
             System.out.println("Number at position: " + location);
             System.out.print("Enter a number to search for (-1 to quit): ");
             searchNum = input.nextInt();

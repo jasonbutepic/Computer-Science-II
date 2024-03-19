@@ -6,12 +6,12 @@ public class Searches {
      * post: Position of goal has been returned,
      * or -1 has been returned if goal not found.
      */
-    public static int binarySearch(int[] items, int start,
-            int end, int goal) {
+    public static int binarySearch(int[] items, int start, int end, int goal) {
+        int mid = (start + end) / 2;
+        System.out.println("Checking for " + goal + " at " + mid);
         if (start > end) {
             return (-1);
         } else {
-            int mid = (start + end) / 2;
             if (goal == items[mid]) {
                 return (mid);
             } else if (goal < items[mid]) {
@@ -22,8 +22,7 @@ public class Searches {
         }
     }
 
-    public static int ObjectBinarySort(Comparable[] items, int start,
-            int end, Comparable goal) {
+    public static int binarySearch(Comparable[] items, int start, int end, Comparable goal) {
         if (start > end) {
             return (-1);
         } else {
@@ -31,9 +30,9 @@ public class Searches {
             if (goal.compareTo(items[mid]) == 0) {
                 return (mid);
             } else if (goal.compareTo(items[mid]) < 0) {
-                return (ObjectBinarySort(items, start, mid - 1, goal));
+                return (binarySearch(items, start, mid - 1, goal));
             } else {
-                return (ObjectBinarySort(items, mid + 1, end, goal));
+                return (binarySearch(items, mid + 1, end, goal));
             }
         }
     }
