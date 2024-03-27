@@ -3,7 +3,9 @@ public class TestSorts {
 
 
     public static void main(String[] args) {
-        String[] names = {"Bob", "Alice", "Charlie", "David", "Eve", "Frank", "Grace", "Heidi", "Ivan", "Judy"};
+        String[] names = {"Heidi", "Frank", "Judy", "Eve", "Charlie", "Grace", "Alice", "Ivan", "David"};
+
+        Sorts.selectionSort(names);
 
         int start = 0, end = names.length - 1;
         String goal;

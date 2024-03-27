@@ -13,5 +13,5 @@ To have this program detect colonies diagonal to it, it would need to do (row + 
 The colonies reported would be at (1,3) with a size of 17, and (1,6) with a size of 4.
 
 The slide that will be outputted by the second displaySlide() method will be all non colonies.
-This is because the program deltes colonies after it counts them so it doesn't recount them.
+This is because the program deletes colonies after it counts them so it doesn't recount them.
 */
